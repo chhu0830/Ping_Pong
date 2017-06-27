@@ -8,11 +8,12 @@ window.onload = function() {
     context.strokeStyle = "#FF0000";
     context.lineWidth = 10;
 
-    var ball0  = ball.create(width / 2, height / 2, 20);
-    var board1 = board.create(10, height / 2, height * (2 / 10), 5);
-    var board2 = board.create(width - 10, height / 2, height * (2 / 10), 5);
+    var ball_speed = 5;
+    var board_speed = 5;
 
-    var speed = 5;
+    var ball0  = ball.create(width / 2, height / 2, 20, ball_speed, Math.random() * 180);
+    var board1 = board.create(10, height / 2, height * (2 / 10), board_speed);
+    var board2 = board.create(width - 10, height / 2, height * (2 / 10), board_speed);
 
 
     document.body.addEventListener("keydown", function(event) {
@@ -56,6 +57,8 @@ window.onload = function() {
     });
 
     function game() {
+        ball0.check(context);
+        ball0.update();
         board1.update();
         board2.update();
 
