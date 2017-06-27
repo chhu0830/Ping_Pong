@@ -1,0 +1,46 @@
+body {
+}
+
+#bar {
+    border-style: solid;
+    border-width: 5px;
+    border-color: black;
+    width: 90vw;
+    height: 10vh;
+    line-height: 10vh;
+    margin-left: 5vw;
+    margin-top: 2.5vh;
+}
+
+#score {
+    text-align: center;
+    font-size: 5vh;
+}
+
+#playground {
+    border-style: solid;
+    border-width: 5px;
+    border-color: black;
+    width: 90vw;
+    height: 80vh;
+    margin-left: 5vw;
+    margin-top: 5vh;
+}
+
+.board {
+    width: 10px;
+    height: 20vh;
+    background-color: red;
+    position: relative;
+    top: 30vh;
+}
+
+#board1 {
+    float: left;
+    margin-left: 1vw;
+}
+
+#board2 {
+    float: right;
+    margin-right: 1vw;
+}
