@@ -11,6 +11,7 @@ var ball = {
     },
 
     draw: function(context) {
+        context.beginPath();
         context.arc(this.position.getX(), this.position.getY(), this.radius, 0, Math.PI*2);
         context.fill();
         context.save();
