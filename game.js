@@ -2,18 +2,16 @@ window.onload = function() {
     var canvas = document.getElementById("playground"),
         width = canvas.width = canvas.clientWidth,
         height = canvas.height = canvas.clientHeight;
-    var min_pos = 0, max_pos = height;
+
     var context = canvas.getContext("2d");
-    context.fillStyle = "#0000FF";
-    context.strokeStyle = "#FF0000";
-    context.lineWidth = 10;
+    context.fillStyle   = ball_color;
+    context.strokeStyle = board_color;
+    context.lineWidth   = board_width;
 
-    var ball_speed = 5;
-    var board_speed = 10;
-    var board_length = height * (2 / 10);
-    var game_time = 10;
+    var board_length = height * (2 / 10),
+        board_minpos = 0,
+        board_maxpos = height;
 
-    var timer  = document.getElementById("timer");
     var score1 = 0;
     var score2 = 0;
 
@@ -21,30 +19,7 @@ window.onload = function() {
     var board1 = null;
     var board2 = null;
     var interval = null;
-    var game_over = true;
-
-    function init() {
-        ball0  = ball.create(width / 2, height / 2, 20, ball_speed, Math.random() * 180);
-        board1 = board.create(10, height / 2, board_length, board_speed, min_pos, max_pos);
-        board2 = board.create(width - 10, height / 2, board_length, board_speed, min_pos, max_pos);
-        timer.innerHTML = ("0" + Math.floor(game_time / 60)).slice(-2) + ":" + ("0" + game_time % 60).slice(-2);
-        draw();
-    }
-
-    function start() {
-        init();
-        var time = game_time - 1;
-        interval = setInterval(function() {
-            timer.innerHTML = ("0" + Math.floor(time / 60)).slice(-2) + ":" + ("0" + time % 60).slice(-2);
-            console.log(time--);
-            if (time < 0) {
-                time = game_time;
-                game_over = true;
-            }
-        }, 1000);
-        game_over = false;
-        game();
-    }
+    var game_over = null;
 
     document.body.addEventListener("keydown", function(event) {
         console.log(event.keyCode);
@@ -90,6 +65,37 @@ window.onload = function() {
         }
     });
 
+    function set_timer(t) {
+        var timer  = document.getElementById("timer");
+        var minute = ("0" + Math.floor(t / 60)).slice(-2);
+        var second = ("0" + (t % 60)).slice(-2);
+        timer.innerHTML = (minute + ":" + second);
+    };
+
+    function init() {
+        ball0  = ball.create(width / 2, height / 2, ball_radius, ball_speed, Math.random() * 180);
+        board1 = board.create(board_margin, height / 2, board_length, board_speed, board_minpos, board_maxpos);
+        board2 = board.create(width - board_margin, height / 2, board_length, board_speed, board_minpos, board_maxpos);
+        game_over = true;
+        set_timer(game_time);
+        draw();
+    };
+
+    function start() {
+        init();
+        var time = game_time - 1;
+        interval = setInterval(function() {
+            set_timer(time);
+            console.log(time--);
+            if (time < 0) {
+                time = game_time;
+                game_over = true;
+            }
+        }, 1000);
+        game_over = false;
+        game();
+    };
+
     function draw() {
         context.clearRect(0, 0, width, height);
         ball0.draw(context);
@@ -118,11 +124,11 @@ window.onload = function() {
 
             requestAnimationFrame(game);
         }
-    }
+    };
 
     function stop() {
         clearInterval(interval);
-    }
+    };
 
     init();
 }
