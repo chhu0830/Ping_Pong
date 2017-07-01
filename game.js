@@ -59,15 +59,23 @@ window.onload = function() {
     });
 
     function game() {
-        ball0.check(context);
-        ball0.update();
-        board1.update();
-        board2.update();
-
         context.clearRect(0, 0, width, height);
         ball0.draw(context);
         board1.draw(context);
         board2.draw(context);
+
+        ball0.bounce(board1);
+        ball0.bounce(board2);
+
+        result = ball0.check(context);
+        if (result == 1)
+            console.log("A win");
+        else if (result == -1)
+            console.log("B win");
+
+        ball0.update();
+        board1.update();
+        board2.update();
 
         requestAnimationFrame(game);
     }

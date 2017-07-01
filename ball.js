@@ -29,17 +29,35 @@ var ball = {
         width = context.canvas.width;
         height = context.canvas.height;
         if (this.position.getX() - this.radius <= 0) {
-            this.velocity.setX(-this.velocity.getX());
+            this.reverse("X")
             return -1;
         }
         if (this.position.getX() + this.radius >= width) {
-            this.velocity.setX(-this.velocity.getX());
+            this.reverse("X")
             return 1;
         }
         if (this.position.getY() - this.radius <= 0 || this.position.getY() + this.radius >= height)
-            this.velocity.setY(-this.velocity.getY());
+            this.reverse("Y")
         return 0;
-    }
+    },
 
+    bounce: function(board) {
+        if (this.position.getY() >= board.min && this.position.getY() <= board.max && Math.abs(this.position.getX() - board.position.getX()) < this.radius) {
+            this.reverse("X");
+        }
+    },
+
+    reverse: function(axis) {
+        switch (axis) {
+            case "X":
+                this.velocity.setX(-this.velocity.getX());
+                break;
+            case "Y":
+                this.velocity.setY(-this.velocity.getY());
+                break;
+            default:
+                break;
+        }
+    }
 }
 
