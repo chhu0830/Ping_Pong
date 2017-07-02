@@ -73,7 +73,7 @@ window.onload = function() {
     };
 
     function init() {
-        ball0  = ball.create(width / 2, height / 2, ball_radius, ball_speed, Math.random() * 180);
+        ball0  = ball.create(width / 2, height / 2, ball_radius, ball_speed, Math.random() * 180, ball_func);
         board1 = board.create(board_margin, height / 2, board_length, board_speed, board_minpos, board_maxpos);
         board2 = board.create(width - board_margin, height / 2, board_length, board_speed, board_minpos, board_maxpos);
         game_over = true;
@@ -108,6 +108,12 @@ window.onload = function() {
             stop();
         }
         else {
+            ball0.update();
+            board1.update();
+            board2.update();
+
+            draw();
+
             ball0.bounce(board1);
             ball0.bounce(board2);
 
@@ -116,11 +122,6 @@ window.onload = function() {
                 document.getElementById("score1").innerHTML = ++score1;
             else if (result == -1)
                 document.getElementById("score2").innerHTML = ++score2;
-
-            ball0.update();
-            board1.update();
-            board2.update();
-            draw();
 
             requestAnimationFrame(game);
         }

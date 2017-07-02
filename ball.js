@@ -2,14 +2,22 @@ var ball = {
     position: null,
     radius: 0,
     velocity: null,
+    route: null,
+    func: null,
+    t: 0,
+    dx: 0.001,
 
-    create: function(x, y, radius, speed, direction) {
+    create: function(x, y, radius, speed, direction, func) {
         var obj = Object.create(this);
         obj.position = vector.create(x, y);
         obj.radius = radius;
         obj.velocity = vector.create(x, y);
         obj.velocity.setLength(speed);
         obj.velocity.setAngle(direction);
+        obj.route = vector.create(x, y);
+        obj.route.setLength(speed);
+        obj.route.setAngle(direction);
+        obj.func = func;
         return obj
     },
 
@@ -17,12 +25,15 @@ var ball = {
         context.beginPath();
         context.arc(this.position.getX(), this.position.getY(), this.radius, 0, Math.PI*2);
         context.fill();
-        context.save();
     },
 
     update: function() {
-        this.position.setX(this.position.getX() + this.velocity.getX());
-        this.position.setY(this.position.getY() + this.velocity.getY());
+        angle = Math.atan2(this.func(this.t + this.dx) - this.func(this.t), this.dx);
+        this.route.setAngle(this.velocity.getAngle() + angle);
+
+        this.position.setX(this.position.getX() + this.route.getX());
+        this.position.setY(this.position.getY() + this.route.getY());
+        this.t++;
     },
 
     check: function(context) {
@@ -42,7 +53,9 @@ var ball = {
     },
 
     bounce: function(board) {
-        if (this.position.getY() >= board.min && this.position.getY() <= board.max && Math.abs(this.position.getX() - board.position.getX()) < this.radius) {
+        if (this.position.getY() >= board.min &&
+            this.position.getY() <= board.max &&
+            Math.abs(this.position.getX() - board.position.getX()) < this.radius) {
             this.reverse("X");
         }
     },
