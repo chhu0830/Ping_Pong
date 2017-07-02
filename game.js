@@ -14,12 +14,12 @@ window.onload = function() {
 
     var score1 = 0;
     var score2 = 0;
+    var game_over = true;
 
     var ball0  = null;
     var board1 = null;
     var board2 = null;
     var interval = null;
-    var game_over = null;
 
     document.body.addEventListener("keydown", function(event) {
         console.log(event.keyCode);
@@ -76,6 +76,10 @@ window.onload = function() {
         ball0  = ball.create(width / 2, height / 2, ball_radius, ball_speed, Math.random() * 180, ball_func);
         board1 = board.create(board_margin, height / 2, board_length, board_speed, board_minpos, board_maxpos);
         board2 = board.create(width - board_margin, height / 2, board_length, board_speed, board_minpos, board_maxpos);
+        score1 = 0;
+        score2 = 0;
+        document.getElementById("score1").innerHTML = score1;
+        document.getElementById("score2").innerHTML = score2;
         game_over = true;
         set_timer(game_time);
         draw();
