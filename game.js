@@ -92,8 +92,7 @@ window.onload = function() {
             set_timer(time);
             console.log(time--);
             if (time < 0) {
-                time = game_time;
-                game_over = true;
+                stop();
             }
         }, 1000);
         game_over = false;
@@ -105,13 +104,10 @@ window.onload = function() {
         ball0.draw(context);
         board1.draw(context);
         board2.draw(context);
-    }
+    };
 
     function game() {
-        if (game_over) {
-            stop();
-        }
-        else {
+        if (!game_over) {
             ball0.update();
             board1.update();
             board2.update();
@@ -133,6 +129,7 @@ window.onload = function() {
 
     function stop() {
         clearInterval(interval);
+        game_over = true;
     };
 
     init();

@@ -28,26 +28,26 @@ var ball = {
     },
 
     update: function() {
-        angle = Math.atan2(this.func(this.t + this.dx) - this.func(this.t), this.dx);
-        this.route.setAngle(this.velocity.getAngle() + angle);
-
         this.position.setX(this.position.getX() + this.route.getX());
         this.position.setY(this.position.getY() + this.route.getY());
+
+        angle = Math.atan2(this.func(this.t + this.dx) - this.func(this.t), this.dx);
+        this.route.setAngle(this.velocity.getAngle() + angle);
         this.t++;
     },
 
     check: function(context) {
         width = context.canvas.width;
         height = context.canvas.height;
-        if (this.position.getX() - this.radius <= 0) {
+        if (this.position.getX() + this.route.getX() - this.radius <= 0) {
             this.reverse("X")
             return -1;
         }
-        if (this.position.getX() + this.radius >= width) {
+        if (this.position.getX() + this.route.getX() + this.radius >= width) {
             this.reverse("X")
             return 1;
         }
-        if (this.position.getY() - this.radius <= 0 || this.position.getY() + this.radius >= height)
+        if (this.position.getY() + this.route.getY() - this.radius <= 0 || this.position.getY() + this.route.getY() + this.radius >= height)
             this.reverse("Y")
         return 0;
     },
@@ -55,7 +55,7 @@ var ball = {
     bounce: function(board) {
         if (this.position.getY() >= board.min &&
             this.position.getY() <= board.max &&
-            Math.abs(this.position.getX() - board.position.getX()) < this.radius) {
+            Math.abs(this.position.getX() + this.route.getX() - board.position.getX()) < this.radius) {
             this.reverse("X");
         }
     },
@@ -64,9 +64,11 @@ var ball = {
         switch (axis) {
             case "X":
                 this.velocity.setX(-this.velocity.getX());
+                this.route.setX(-this.route.getX());
                 break;
             case "Y":
                 this.velocity.setY(-this.velocity.getY());
+                this.route.setY(-this.route.getY());
                 break;
             default:
                 break;
