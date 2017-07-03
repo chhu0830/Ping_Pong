@@ -4,6 +4,7 @@ var ball = {
     velocity: null,
     route: null,
     func: null,
+    visible: true,
     t: 0,
     dx: 0.001,
 
@@ -22,9 +23,11 @@ var ball = {
     },
 
     draw: function(context) {
-        context.beginPath();
-        context.arc(this.position.getX(), this.position.getY(), this.radius, 0, Math.PI*2);
-        context.fill();
+        if (this.visible) {
+            context.beginPath();
+            context.arc(this.position.getX(), this.position.getY(), this.radius, 0, Math.PI*2);
+            context.fill();
+        }
     },
 
     update: function() {
@@ -39,17 +42,21 @@ var ball = {
     check: function(context) {
         width = context.canvas.width;
         height = context.canvas.height;
+
+        if (this.position.getY() + this.route.getY() - this.radius <= 0 || this.position.getY() + this.route.getY() + this.radius >= height)
+            this.reverse("Y")
+
         if (this.position.getX() + this.route.getX() - this.radius <= 0) {
             this.reverse("X")
             return -1;
         }
-        if (this.position.getX() + this.route.getX() + this.radius >= width) {
+        else if (this.position.getX() + this.route.getX() + this.radius >= width) {
             this.reverse("X")
             return 1;
         }
-        if (this.position.getY() + this.route.getY() - this.radius <= 0 || this.position.getY() + this.route.getY() + this.radius >= height)
-            this.reverse("Y")
-        return 0;
+        else {
+            return 0;
+        }
     },
 
     bounce: function(board) {
