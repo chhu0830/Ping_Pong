@@ -1,7 +1,18 @@
+var height = null;
+var width  = null;
+var ball0  = null;
+var board1 = null;
+var board2 = null;
+
+var skill_time = null;
+var skill_using = null;
+var skill_available = null;
+var skill_interval = null;
+
 window.onload = function() {
-    var canvas = document.getElementById("playground"),
-        width = canvas.width = canvas.clientWidth,
-        height = canvas.height = canvas.clientHeight;
+    var canvas = document.getElementById("playground");
+    width = canvas.width = canvas.clientWidth;
+    height = canvas.height = canvas.clientHeight;
 
     var context = canvas.getContext("2d");
     context.fillStyle   = ball_color;
@@ -16,13 +27,11 @@ window.onload = function() {
     var score2 = 0;
     var game_over = true;
 
-    var ball0  = null;
-    var board1 = null;
-    var board2 = null;
     var interval = null;
 
+
     document.body.addEventListener("keydown", function(event) {
-        console.log(event.keyCode);
+        // console.log(event.keyCode);
         switch (event.keyCode) {
             case 87:
                 board1.setUp(true);
@@ -42,7 +51,7 @@ window.onload = function() {
     });
 
     document.body.addEventListener("keyup", function(event) {
-        console.log(event.keyCode);
+        // console.log(event.keyCode);
         switch (event.keyCode) {
             case 87:
                 board1.setUp(false);
@@ -60,10 +69,33 @@ window.onload = function() {
                 if (game_over)
                     start();
                 break;
+            case 49:
+                use_skill(0, 0);
+                break;
+            case 50:
+                use_skill(0, 1);
+                break;
+            case 51:
+                use_skill(0, 2);
+                break;
             default:
                 break;
         }
     });
+
+    function use_skill(player, skill) {
+        if (skill_available[player][skill]) {
+            skill_available[player][skill] = false;
+            skill_using[player][skill] = true;
+            skill_interval[player][skill] = setInterval(function() {
+                console.log(skill_time[player][skill]);
+                if (--skill_time[player][skill] < 0) {
+                    skill_using[player][skill] = false;
+                    clearInterval(skill_interval[player][skill]);
+                }
+            }, 1000);
+        }
+    };
 
     function set_timer(t) {
         var timer  = document.getElementById("timer");
@@ -80,6 +112,10 @@ window.onload = function() {
         score2 = 0;
         document.getElementById("score1").innerHTML = score1;
         document.getElementById("score2").innerHTML = score2;
+        skill_time = new Array(2).fill([3, 3, 3]);
+        skill_using = [new Array(skill.length).fill(false), new Array(skill.length).fill(false)];
+        skill_available = [new Array(skill.length).fill(true), new Array(skill.length).fill(true)];
+        skill_interval = [new Array(skill.length).fill(null), new Array(skill.length).fill(null)];
         game_over = true;
         set_timer(game_time);
         draw();
@@ -87,11 +123,10 @@ window.onload = function() {
 
     function start() {
         init();
-        var time = game_time - 1;
+        var time = game_time;
         interval = setInterval(function() {
-            set_timer(time);
-            console.log(time--);
-            if (time < 0) {
+            set_timer(--time);
+            if (time <= 0) {
                 stop();
             }
         }, 1000);
@@ -108,20 +143,20 @@ window.onload = function() {
 
     function game() {
         if (!game_over) {
+            for (var i = 0; i < skill.length; i++) {
+                skill[i](i);
+            }
+            result = ball0.check();
+            if (result == 1)
+                document.getElementById("score1").innerHTML = ++score1;
+            else if (result == -1)
+                document.getElementById("score2").innerHTML = ++score2;
+
             ball0.update();
             board1.update();
             board2.update();
 
             draw();
-
-            ball0.bounce(board1);
-            ball0.bounce(board2);
-
-            result = ball0.check(context);
-            if (result == 1)
-                document.getElementById("score1").innerHTML = ++score1;
-            else if (result == -1)
-                document.getElementById("score2").innerHTML = ++score2;
 
             requestAnimationFrame(game);
         }
