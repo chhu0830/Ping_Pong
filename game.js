@@ -3,6 +3,7 @@ var width  = null;
 var ball0  = null;
 var board1 = null;
 var board2 = null;
+var board_length = null;
 
 var skill_time = null;
 var skill_using = null;
@@ -19,9 +20,7 @@ window.onload = function() {
     context.strokeStyle = board_color;
     context.lineWidth   = board_width;
 
-    var board_length = height * (2 / 10),
-        board_minpos = 0,
-        board_maxpos = height;
+    board_length = height * (2 / 10);
 
     var score1 = 0;
     var score2 = 0;
@@ -98,7 +97,7 @@ window.onload = function() {
             skill_using[player][skill] = true;
             skill_interval[player][skill] = setInterval(function() {
                 console.log(skill_time[player][skill]);
-                if (--skill_time[player][skill] < 0) {
+                if (--skill_time[player][skill] == 0) {
                     skill_using[player][skill] = false;
                     clearInterval(skill_interval[player][skill]);
                 }
@@ -115,16 +114,16 @@ window.onload = function() {
 
     function init() {
         ball0  = ball.create(width / 2, height / 2, ball_radius, ball_speed, Math.random() * 180, ball_func);
-        board1 = board.create(board_margin, height / 2, board_length, board_speed, board_minpos, board_maxpos);
-        board2 = board.create(width - board_margin, height / 2, board_length, board_speed, board_minpos, board_maxpos);
+        board1 = board.create(board_margin, height / 2, board_length, board_speed);
+        board2 = board.create(width - board_margin, height / 2, board_length, board_speed);
         score1 = 0;
         score2 = 0;
         document.getElementById("score1").innerHTML = score1;
         document.getElementById("score2").innerHTML = score2;
-        skill_time = new Array(2).fill([3, 3, 3]);
-        skill_using = [new Array(skill.length).fill(false), new Array(skill.length).fill(false)];
-        skill_available = [new Array(skill.length).fill(true), new Array(skill.length).fill(true)];
-        skill_interval = [new Array(skill.length).fill(null), new Array(skill.length).fill(null)];
+        skill_time = [skill_time1, skill_time2];
+        skill_using = [Array(skill.length).fill(false), Array(skill.length).fill(false)];
+        skill_available = [Array(skill.length).fill(true), Array(skill.length).fill(true)];
+        skill_interval = [Array(skill.length).fill(null), Array(skill.length).fill(null)];
         game_over = true;
         set_timer(game_time);
         draw();
@@ -135,7 +134,7 @@ window.onload = function() {
         var time = game_time;
         interval = setInterval(function() {
             set_timer(--time);
-            if (time <= 0) {
+            if (time == 0) {
                 stop();
             }
         }, 1000);
