@@ -3,20 +3,16 @@ var board = { position: null,
     up: false,
     down: false,
     speed: 0,
-    min_pos: 0,
-    max_pos: 0,
     min: 0,
     max: 0,
 
     create: function(x, y, length, speed, min_pos, max_pos) {
         var obj = Object.create(this);
         obj.position = vector.create(x, y);
-        obj.length = length / 2;
+        obj.length = length;
         obj.speed = speed;
-        obj.min_pos = min_pos;
-        obj.max_pos = max_pos;
-        obj.min = y - obj.length;
-        obj.max = y + obj.length;
+        obj.min = y - obj.length / 2;
+        obj.max = y + obj.length / 2;
         return obj
     },
 
@@ -37,23 +33,21 @@ var board = { position: null,
 
     moveUp: function() {
         this.position.setY(this.position.getY() - this.speed);
-        this.min -= this.speed;
-        this.max -= this.speed;
     },
 
     moveDown: function() {
         this.position.setY(this.position.getY() + this.speed);
-        this.min += this.speed;
-        this.max += this.speed;
     },
 
     update: function() {
-        if (this.up && this.min > this.min_pos) {
+        if (this.up && this.min > 0) {
             this.moveUp();
         }
-        if (this.down && this.max < this.max_pos) {
+        if (this.down && this.max < height) {
             this.moveDown();
         }
+        this.min = this.position.getY() - this.length / 2;
+        this.max = this.position.getY() + this.length / 2;
     }
 }
 
