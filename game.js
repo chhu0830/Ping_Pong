@@ -31,7 +31,7 @@ window.onload = function() {
 
 
     document.body.addEventListener("keydown", function(event) {
-        // console.log(event.keyCode);
+        console.log(event.keyCode);
         switch (event.keyCode) {
             case 87:
                 board1.setUp(true);
@@ -39,10 +39,10 @@ window.onload = function() {
             case 83:
                 board1.setDown(true);
                 break;
-            case 38:
+            case 79:
                 board2.setUp(true);
                 break;
-            case 40:
+            case 76:
                 board2.setDown(true);
                 break;
             default:
@@ -59,10 +59,10 @@ window.onload = function() {
             case 83:
                 board1.setDown(false);
                 break;
-            case 38:
+            case 79:
                 board2.setUp(false);
                 break;
-            case 40:
+            case 76:
                 board2.setDown(false);
                 break;
             case 32:
@@ -78,13 +78,22 @@ window.onload = function() {
             case 51:
                 use_skill(0, 2);
                 break;
+            case 56:
+                use_skill(1, 0);
+                break;
+            case 57:
+                use_skill(1, 1);
+                break;
+            case 48:
+                use_skill(1, 2);
+                break;
             default:
                 break;
         }
     });
 
     function use_skill(player, skill) {
-        if (skill_available[player][skill]) {
+        if (skill_available[player][skill] && !skill_using[player^1][skill]) {
             skill_available[player][skill] = false;
             skill_using[player][skill] = true;
             skill_interval[player][skill] = setInterval(function() {
