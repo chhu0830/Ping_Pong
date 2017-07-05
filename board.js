@@ -1,5 +1,5 @@
 var board = { position: null,
-    length: 100,
+    length: 0,
     up: false,
     down: false,
     speed: 0,
