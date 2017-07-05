@@ -1,2 +1,7 @@
-var sin = function(t) { return 2 * Math.sin(t / 2) };
-var line = function(t) { return 0 };
+function sin(t) {
+    return 2 * Math.sin(t / 2);
+}
+
+function line(t) {
+    return 0;
+}
