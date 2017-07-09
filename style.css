@@ -46,6 +46,10 @@ body {
 }
 
 .skill {
+    text-align: center;
+    color: red;
+    font-size: 36pt;
+    line-height: 10vh;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;

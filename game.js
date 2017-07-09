@@ -113,6 +113,7 @@ function use_skill(player, skill) {
             console.log(skill_time[player][skill]);
             if (--skill_time[player][skill] == 0) {
                 skill_using[player][skill] = false;
+                document.getElementById("skill" + (player + 1) + skill).innerHTML = "X";
                 skills[skill].func();
                 clearInterval(skill_interval[player][skill]);
             }
@@ -144,6 +145,10 @@ function init() {
     score2 = 0;
     document.getElementById("score1").innerHTML = score1;
     document.getElementById("score2").innerHTML = score2;
+    for (var i = 0; i < 4; i++) {
+        document.getElementById("skill1" + i).innerHTML = "";
+        document.getElementById("skill2" + i).innerHTML = "";
+    }
     skill_time = [[5, 5, 5, 5, 5], [5, 5, 5, 5, 5]];
     skill_using = [Array(skills.length).fill(false), Array(skills.length).fill(false)];
     skill_available = [Array(skills.length).fill(true), Array(skills.length).fill(true)];
