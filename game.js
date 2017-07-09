@@ -31,6 +31,8 @@ window.onload = function() {
 
     board_length = height * (2 / 10);
 
+    set_icon();
+
 
     document.body.addEventListener("keydown", function(event) {
         console.log(event.keyCode);
@@ -111,7 +113,7 @@ function use_skill(player, skill) {
             console.log(skill_time[player][skill]);
             if (--skill_time[player][skill] == 0) {
                 skill_using[player][skill] = false;
-                skills[skill]();
+                skills[skill].func();
                 clearInterval(skill_interval[player][skill]);
             }
         }, 1000);
@@ -124,6 +126,15 @@ function set_timer(t) {
     var second = ("0" + (t % 60)).slice(-2);
     timer.innerHTML = (minute + ":" + second);
 };
+
+function set_icon() {
+    for (var i = 0; i < 4; i++) {
+        var icon = document.getElementById("skill1" + i);
+        icon.style.backgroundImage = 'url("' + skills[i].icon + '")';
+        var icon = document.getElementById("skill2" + i);
+        icon.style.backgroundImage = 'url("' + skills[i].icon + '")';
+    }
+}
 
 function init() {
     ball0  = ball.create(width / 2, height / 2, ball_radius, ball_speed, (Math.random() * 2 - 1) * Math.PI, ball_func);
@@ -161,10 +172,10 @@ function game() {
         draw();
         for (var i = 0; i < skills.length; i++) {
             if (skill_using[0][i]) {
-                skills[i](0);
+                skills[i].func(0);
             }
             if (skill_using[1][i]) {
-                skills[i](1);
+                skills[i].func(1);
             }
         }
 

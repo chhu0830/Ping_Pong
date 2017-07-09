@@ -10,4 +10,4 @@ var board_color  = "#FF0000";
 
 var game_time = 20;
 
-var skill = [disappear, speedUp, bigBoard, variantBall];
+var skills = [multiBall, variantBall, bigBoard, disappear, speedUp].sort(function() { return 0.5 - Math.random(); });

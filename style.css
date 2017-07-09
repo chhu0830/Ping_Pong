@@ -44,3 +44,9 @@ body {
     float: right;
     margin-right: 1vw;
 }
+
+.skill {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
