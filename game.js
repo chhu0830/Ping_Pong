@@ -19,7 +19,6 @@ var score2 = null;
 var game_over = null;
 var interval = null;
 
-
 window.onload = function() {
     canvas = document.getElementById("playground");
     width  = canvas.width = canvas.clientWidth;
@@ -112,6 +111,7 @@ function use_skill(player, skill) {
             console.log(skill_time[player][skill]);
             if (--skill_time[player][skill] == 0) {
                 skill_using[player][skill] = false;
+                skills[skill]();
                 clearInterval(skill_interval[player][skill]);
             }
         }, 1000);
@@ -134,9 +134,9 @@ function init() {
     document.getElementById("score1").innerHTML = score1;
     document.getElementById("score2").innerHTML = score2;
     skill_time = [[5, 5, 5, 5, 5], [5, 5, 5, 5, 5]];
-    skill_using = [Array(skill.length).fill(false), Array(skill.length).fill(false)];
-    skill_available = [Array(skill.length).fill(true), Array(skill.length).fill(true)];
-    skill_interval = [Array(skill.length).fill(null), Array(skill.length).fill(null)];
+    skill_using = [Array(skills.length).fill(false), Array(skills.length).fill(false)];
+    skill_available = [Array(skills.length).fill(true), Array(skills.length).fill(true)];
+    skill_interval = [Array(skills.length).fill(null), Array(skills.length).fill(null)];
     game_over = true;
     set_timer(game_time);
     draw();
@@ -158,16 +158,15 @@ function start() {
 
 function game() {
     if (!game_over) {
-        for (var i = 0; i < skill.length; i++) {
-            skill[i](i);
-        }
-
-        ball0.check();
-        ball0.update();
-        board1.update();
-        board2.update();
-
         draw();
+        for (var i = 0; i < skills.length; i++) {
+            if (skill_using[0][i]) {
+                skills[i](0);
+            }
+            if (skill_using[1][i]) {
+                skills[i](1);
+            }
+        }
 
         requestAnimationFrame(game);
     }
@@ -175,6 +174,12 @@ function game() {
 
 function draw() {
     context.clearRect(0, 0, width, height);
+
+    ball0.check();
+    ball0.update();
+    board1.update();
+    board2.update();
+
     ball0.draw();
     board1.draw();
     board2.draw();
