@@ -16,7 +16,7 @@ var board = { position: null,
         return obj
     },
 
-    draw: function(context) {
+    draw: function() {
         context.beginPath();
         context.moveTo(this.position.getX(), this.min);
         context.lineTo(this.position.getX(), this.max);

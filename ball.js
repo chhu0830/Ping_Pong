@@ -21,7 +21,7 @@ var ball = {
         return obj
     },
 
-    draw: function(context) {
+    draw: function() {
         if (this.visible) {
             context.beginPath();
             context.arc(this.position.getX(), this.position.getY(), this.radius, 0, Math.PI*2);
@@ -60,12 +60,12 @@ var ball = {
             if (this.position.getX() + this.velocity.getX() - this.radius <= 0) {
                 this.position.setX(0 + this.velocity.getX() + this.radius);
                 this.reverse("X")
-                return -1;
+                document.getElementById("score1").innerHTML = ++score1;
             }
             else if (this.position.getX() + this.velocity.getX() + this.radius >= width) {
                 this.position.setX(width + this.velocity.getX() - this.radius);
                 this.reverse("X")
-                return 1;
+                document.getElementById("score2").innerHTML = ++score2;
             }
         }
         return 0;
