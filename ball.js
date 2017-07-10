@@ -30,12 +30,12 @@ var ball = {
     },
 
     update: function() {
-        this.position.setX(this.position.getX() + this.velocity.getX());
-        this.position.setY(this.position.getY() + this.velocity.getY());
-
         angle = Math.atan2(this.func(this.t + this.dx) - this.func(this.t), this.dx);
         this.velocity.setAngle(this.direction.getAngle() + angle);
         this.t++;
+
+        this.position.setX(this.position.getX() + this.velocity.getX());
+        this.position.setY(this.position.getY() + this.velocity.getY());
     },
 
     check: function() {
@@ -50,11 +50,11 @@ var ball = {
 
         if (this.position.getY() >= board1.min && this.position.getY() <= board1.max && this.position.getX() + this.velocity.getX() - board1.position.getX() < this.radius) {
             this.position.setX(board1.position.getX() + this.velocity.getX() + this.radius);
-            this.reverse("X");
+            this.direction.setAngle(((this.position.getY() - board1.min) / board1.length - 0.5) * Math.PI / 2);
         }
         else if (this.position.getY() >= board2.min && this.position.getY() <= board2.max && board2.position.getX() - (this.position.getX() + this.velocity.getX()) < this.radius) {
             this.position.setX(board2.position.getX() + this.velocity.getX() - this.radius);
-            this.reverse("X");
+            this.direction.setAngle(Math.PI + (0.5 - (this.position.getY() - board2.min) / board2.length) * Math.PI / 2);
         }
         else {
             if (this.position.getX() + this.velocity.getX() - this.radius <= 0) {
