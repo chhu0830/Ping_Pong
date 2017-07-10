@@ -78,7 +78,7 @@ var bigBoard = {
 
 var variantBall = {
     icon: "./images/variantBall.png",
-    func: function variantBall(player) {
+    func: function(player) {
         switch (player) {
             case 0:
                 if (ball0.position.getX() < width / 2) {
@@ -103,6 +103,20 @@ var variantBall = {
     }
 }
 
+var demo = {
+    icon: "./images/demo.png",
+    func: function(player) {
+        switch (player) {
+            case 0:
+                break;
+            case 1:
+                break;
+            default:
+                break;
+        }
+    }
+}
+
 var multiBall = {
     balls: [],
     icon: "./images/multiBall.png",
@@ -114,7 +128,7 @@ var multiBall = {
                     ball0.radius = ball_radius / 2;
                     ball0.velocity.setLength(ball_speed * 2);
                     for (var j = 0; j < 10; j++) {
-                        this.balls.push(ball.create(ball0.position.getX(), ball0.position.getY(), ball_radius / 2, ball_speed * 2, (Math.random() * 2 - 1) * Math.PI, ball_func));
+                        this.balls.push(ball.create(ball0.position.getX(), ball0.position.getY(), ball_radius / 2, ball_speed * 2, Math.random() * Math.PI * 2, ball_func));
                     }
                 }
                 else {

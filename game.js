@@ -31,7 +31,7 @@ window.onload = function() {
 
     board_length = height * (2 / 10);
 
-    set_icon();
+    setIcon();
 
 
     document.body.addEventListener("keydown", function(event) {
@@ -121,14 +121,14 @@ function use_skill(player, skill) {
     }
 };
 
-function set_timer(t) {
+function setTimer(t) {
     var timer  = document.getElementById("timer");
     var minute = ("0" + Math.floor(t / 60)).slice(-2);
     var second = ("0" + (t % 60)).slice(-2);
     timer.innerHTML = (minute + ":" + second);
 };
 
-function set_icon() {
+function setIcon() {
     for (var i = 0; i < 4; i++) {
         var icon = document.getElementById("skill1" + i);
         icon.style.backgroundImage = 'url("' + skills[i].icon + '")';
@@ -138,7 +138,7 @@ function set_icon() {
 }
 
 function init() {
-    ball0  = ball.create(width / 2, height / 2, ball_radius, ball_speed, (Math.random() * 2 - 1) * Math.PI, ball_func);
+    ball0  = ball.create(width / 2, height / 2, ball_radius, ball_speed, Math.random() * Math.PI * 2, ball_func);
     board1 = board.create(board_margin, height / 2, board_length, board_speed);
     board2 = board.create(width - board_margin, height / 2, board_length, board_speed);
     score1 = 0;
@@ -154,7 +154,7 @@ function init() {
     skill_available = [Array(skills.length).fill(true), Array(skills.length).fill(true)];
     skill_interval = [Array(skills.length).fill(null), Array(skills.length).fill(null)];
     game_over = true;
-    set_timer(game_time);
+    setTimer(game_time);
     draw();
 };
 
@@ -162,7 +162,7 @@ function start() {
     init();
     var time = game_time;
     interval = setInterval(function() {
-        set_timer(--time);
+        setTimer(--time);
         if (time == 0) {
             game_over = true;
             clearInterval(interval);

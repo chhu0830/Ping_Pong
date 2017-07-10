@@ -60,12 +60,12 @@ var ball = {
             if (this.position.getX() + this.velocity.getX() - this.radius <= 0) {
                 this.position.setX(0 + this.velocity.getX() + this.radius);
                 this.reverse("X")
-                document.getElementById("score1").innerHTML = ++score1;
+                document.getElementById("score2").innerHTML = ++score2;
             }
             else if (this.position.getX() + this.velocity.getX() + this.radius >= width) {
                 this.position.setX(width + this.velocity.getX() - this.radius);
                 this.reverse("X")
-                document.getElementById("score2").innerHTML = ++score2;
+                document.getElementById("score1").innerHTML = ++score1;
             }
         }
         return 0;
