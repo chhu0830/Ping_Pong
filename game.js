@@ -25,8 +25,6 @@ window.onload = function() {
     height = canvas.height = canvas.clientHeight;
 
     context = canvas.getContext("2d");
-    context.fillStyle   = ball_color;
-    context.strokeStyle = board_color;
     context.lineWidth   = board_width;
 
     board_length = height * (2 / 10);
@@ -138,18 +136,20 @@ function setIcon() {
 }
 
 function init() {
-    ball0  = ball.create(width / 2, height / 2, ball_radius, ball_speed, Math.random() * Math.PI * 2, ball_func);
-    board1 = board.create(board_margin, height / 2, board_length, board_speed);
-    board2 = board.create(width - board_margin, height / 2, board_length, board_speed);
+    ball0  = ball.create(width / 2, height / 2, ball_radius, ball_speed, Math.random() * Math.PI * 2, ball_color, ball_func);
+    board1 = board.create(board_margin, height / 2, board_length, board_speed, board1_color);
+    board2 = board.create(width - board_margin, height / 2, board_length, board_speed, board2_color);
     score1 = 0;
     score2 = 0;
     document.getElementById("score1").innerHTML = score1;
     document.getElementById("score2").innerHTML = score2;
+    skill_time = [[], []];
     for (var i = 0; i < 4; i++) {
         document.getElementById("skill1" + i).innerHTML = "";
         document.getElementById("skill2" + i).innerHTML = "";
+        skill_time[0].push(skills[i].time);
+        skill_time[1].push(skills[i].time);
     }
-    skill_time = [[5, 5, 5, 5, 5], [5, 5, 5, 5, 5]];
     skill_using = [Array(skills.length).fill(false), Array(skills.length).fill(false)];
     skill_available = [Array(skills.length).fill(true), Array(skills.length).fill(true)];
     skill_interval = [Array(skills.length).fill(null), Array(skills.length).fill(null)];

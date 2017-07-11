@@ -12,9 +12,22 @@ body {
     margin-top: 2.5vh;
 }
 
-.timer, .score {
+.timer {
     text-align: center;
     font-size: 5vh;
+}
+
+.score {
+    text-align: center;
+    font-size: 5vh;
+}
+
+#score1 {
+    color: red;
+}
+
+#score2 {
+    color: blue;
 }
 
 #playground {

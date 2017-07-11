@@ -1,22 +1,26 @@
-var board = { position: null,
+var board = {
+    position: null,
     length: 0,
     up: false,
     down: false,
     speed: 0,
+    color: "#000000",
     min: 0,
     max: 0,
 
-    create: function(x, y, length, speed, min_pos, max_pos) {
+    create: function(x, y, length, speed, color) {
         var obj = Object.create(this);
         obj.position = vector.create(x, y);
         obj.length = length;
         obj.speed = speed;
         obj.min = y - obj.length / 2;
         obj.max = y + obj.length / 2;
+        obj.color = color;
         return obj
     },
 
     draw: function() {
+        context.strokeStyle = this.color;
         context.beginPath();
         context.moveTo(this.position.getX(), this.min);
         context.lineTo(this.position.getX(), this.max);

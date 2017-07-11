@@ -3,12 +3,13 @@ var ball = {
     radius: 0,
     velocity: null,
     direction: null,
+    color: "#000000",
     func: null,
     visible: true,
     t: 0,
     dx: 0.001,
 
-    create: function(x, y, radius, speed, direction, func) {
+    create: function(x, y, radius, speed, direction, color, func) {
         var obj = Object.create(this);
         obj.position = vector.create(x, y);
         obj.radius = radius;
@@ -17,12 +18,14 @@ var ball = {
         obj.velocity.setAngle(direction);
         obj.direction = vector.create(x, y);
         obj.direction.setAngle(direction);
+        obj.color = color;
         obj.func = func;
         return obj
     },
 
     draw: function() {
         if (this.visible) {
+            context.fillStyle = ball_color;
             context.beginPath();
             context.arc(this.position.getX(), this.position.getY(), this.radius, 0, Math.PI*2);
             context.fill();
