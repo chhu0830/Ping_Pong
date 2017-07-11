@@ -1,5 +1,6 @@
 var speedUp = {
     icon: "./images/speedUp.png",
+    time: 5,
     func: function(player) {
         switch (player) {
             case 0:
@@ -27,6 +28,7 @@ var speedUp = {
 
 var disappear = {
     icon: "./images/disappear.png",
+    time: 5,
     func: function(player) {
         switch(player) {
             case 0:
@@ -60,6 +62,7 @@ var disappear = {
 
 var bigBoard = {
     icon: "./images/bigBoard.png",
+    time: 5,
     func: function(player) {
         switch (player) {
             case 0:
@@ -78,6 +81,7 @@ var bigBoard = {
 
 var variantBall = {
     icon: "./images/variantBall.png",
+    time: 5,
     func: function(player) {
         switch (player) {
             case 0:
@@ -105,6 +109,7 @@ var variantBall = {
 
 var demo = {
     icon: "./images/demo.png",
+    time: 5,
     func: function(player) {
         switch (player) {
             case 0:
@@ -120,6 +125,7 @@ var demo = {
 var multiBall = {
     balls: [],
     icon: "./images/multiBall.png",
+    time: 5,
     func: function(player) {
         switch (player) {
             case 0:
