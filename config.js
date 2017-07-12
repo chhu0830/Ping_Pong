@@ -12,5 +12,5 @@ var board2_color  = "#0000FF";
 var game_time = 20;
 var ball_through = false;
 
-var skills = [straightBall, colorBall, multiBall, variantBall, bigBoard, disappear, speedUp].sort(function() { return Math.random() < 0.5; });
+var skills = [gorilla, straightBall, colorBall, multiBall, variantBall, bigBoard, disappear, speedUp].sort(function() { return Math.random() < 0.5; });
 var playground_effect = [none, ball_pass];

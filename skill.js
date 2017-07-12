@@ -189,3 +189,23 @@ var straightBall = {
         }
     }
 }
+
+var gorilla = {
+    icon: "./images/gorilla.png",
+    time: 5,
+    func: function(player) {
+        switch (player) {
+            case 0:
+            case 1:
+                ball0.radius = ball_radius * 8;
+                ball0.speed.setLength(ball_speed / 2);
+                ball0.img = "./images/song.png";
+                break;
+            default:
+                ball0.radius = ball_radius;
+                ball0.speed.setLength(ball_speed);
+                ball0.img = null;
+                break;
+        }
+    }
+}

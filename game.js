@@ -18,8 +18,10 @@ var score2 = null;
 
 var game_over = null;
 var interval = null;
+var img = null;
 
 window.onload = function() {
+    img = document.createElement("img");
     canvas = document.getElementById("playground");
     width  = canvas.width = canvas.clientWidth;
     height = canvas.height = canvas.clientHeight;

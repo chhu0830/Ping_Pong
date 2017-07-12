@@ -1,11 +1,12 @@
 var ball = {
     position: null,
     radius: 0,
-    velocity: null,
+    speed: null,
     direction: null,
     color: "#000000",
     func: null,
     visible: true,
+    img: null,
     t: 0,
     dx: 0.001,
 
@@ -13,9 +14,9 @@ var ball = {
         var obj = Object.create(this);
         obj.position = vector.create(x, y);
         obj.radius = radius;
-        obj.velocity = vector.create(x, y);
-        obj.velocity.setLength(speed);
-        obj.velocity.setAngle(direction);
+        obj.speed = vector.create(x, y);
+        obj.speed.setLength(speed);
+        obj.speed.setAngle(direction);
         obj.direction = vector.create(x, y);
         obj.direction.setAngle(direction);
         obj.color = color;
@@ -25,62 +26,73 @@ var ball = {
 
     draw: function() {
         if (this.visible) {
-            context.fillStyle = this.color;
-            context.beginPath();
-            context.arc(this.position.getX(), this.position.getY(), this.radius, 0, Math.PI*2);
-            context.fill();
+            if (this.img == null) {
+                context.fillStyle = this.color;
+                context.beginPath();
+                context.arc(this.position.getX(), this.position.getY(), this.radius, 0, Math.PI*2);
+                context.fill();
+            }
+            else {
+                img.src = this.img;
+                context.save();
+                context.beginPath();
+                context.arc(this.position.getX(), this.position.getY(), this.radius, 0, Math.PI*2);
+                context.clip();
+                context.drawImage(img, 0, 0, img.width, img.height, this.position.getX() - this.radius, this.position.getY() - this.radius, this.radius * 2, this.radius * 2);
+                context.restore();
+            }
         }
     },
 
     update: function() {
         angle = Math.atan2(this.func(this.t + this.dx) - this.func(this.t), this.dx);
-        this.velocity.setAngle(this.direction.getAngle() + angle);
+        this.speed.setAngle(this.direction.getAngle() + angle);
         this.t++;
 
-        this.position.setX(this.position.getX() + this.velocity.getX());
-        this.position.setY(this.position.getY() + this.velocity.getY());
+        this.position.setX(this.position.getX() + this.speed.getX());
+        this.position.setY(this.position.getY() + this.speed.getY());
     },
 
     check: function() {
-        if (this.position.getY() + this.velocity.getY() - this.radius <= 0) {
-            this.position.setY(0 + this.velocity.getY() + this.radius);
+        if (this.touchTop()) {
+            this.position.setY(0 + this.speed.getY() + this.radius);
             if (ball_through) {
-                if (this.position.getY() + this.velocity.getY() + this.radius <= 0)
+                if (this.overTop())
                     this.position.setY(height + this.radius);
             }
             else {
-                this.position.setY(0 + this.velocity.getY() + this.radius);
+                this.position.setY(0 + this.speed.getY() + this.radius);
                 this.reverse("Y");
             }
         }
-        else if (this.position.getY() + this.velocity.getY() + this.radius >= height) {
-            this.position.setY(height + this.velocity.getY() - this.radius);
+        else if (this.touchBottom()) {
+            this.position.setY(height + this.speed.getY() - this.radius);
             if (ball_through) {
-                if (this.position.getY() + this.velocity.getY() >= height + this.radius)
+                if (this.position.getY() + this.speed.getY() >= height + this.radius)
                     this.position.setY(0 + this.radius);
             }
             else {
-                this.position.setY(height + this.velocity.getY() - this.radius);
+                this.position.setY(height + this.speed.getY() - this.radius);
                 this.reverse("Y");
             }
         }
 
-        if (this.position.getY() >= board1.min && this.position.getY() <= board1.max && this.position.getX() + this.velocity.getX() - board1.position.getX() < this.radius) {
-            this.position.setX(board1.position.getX() + this.velocity.getX() + this.radius);
+        if (this.touchBoard1()) {
+            this.position.setX(board1.position.getX() + this.speed.getX() + this.radius);
             this.direction.setAngle(((this.position.getY() - board1.min) / board1.length - 0.5) * Math.PI / 2);
         }
-        else if (this.position.getY() >= board2.min && this.position.getY() <= board2.max && board2.position.getX() - (this.position.getX() + this.velocity.getX()) < this.radius) {
-            this.position.setX(board2.position.getX() + this.velocity.getX() - this.radius);
+        else if (this.touchBoard2()) {
+            this.position.setX(board2.position.getX() + this.speed.getX() - this.radius);
             this.direction.setAngle(Math.PI + (0.5 - (this.position.getY() - board2.min) / board2.length) * Math.PI / 2);
         }
         else {
-            if (this.position.getX() + this.velocity.getX() - this.radius <= 0) {
-                this.position.setX(0 + this.velocity.getX() + this.radius);
+            if (this.touchLeft()) {
+                this.position.setX(0 + this.speed.getX() + this.radius);
                 this.reverse("X")
                 document.getElementById("score2").innerHTML = ++score2;
             }
-            else if (this.position.getX() + this.velocity.getX() + this.radius >= width) {
-                this.position.setX(width + this.velocity.getX() - this.radius);
+            else if (this.touchRight()) {
+                this.position.setX(width + this.speed.getX() - this.radius);
                 this.reverse("X")
                 document.getElementById("score1").innerHTML = ++score1;
             }
@@ -88,15 +100,47 @@ var ball = {
         return 0;
     },
 
+    touchLeft: function() {
+        return this.position.getX() + this.speed.getX() - this.radius <= 0;
+    },
+
+    touchRight: function() {
+        return this.position.getX() + this.speed.getX() + this.radius >= width;
+    },
+
+    touchTop: function() {
+        return this.position.getY() + this.speed.getY() - this.radius <= 0;
+    },
+
+    touchBottom: function() {
+        return this.position.getY() + this.speed.getY() + this.radius >= height;
+    },
+
+    touchBoard1: function() {
+        return this.position.getY() >= board1.min && this.position.getY() <= board1.max && this.position.getX() + this.speed.getX() - board1.position.getX() < this.radius;
+    },
+
+    touchBoard2: function() {
+        return this.position.getY() >= board2.min && this.position.getY() <= board2.max && board2.position.getX() - (this.position.getX() + this.speed.getX()) < this.radius;
+    },
+
+    overTop: function() {
+        return this.position.getY() + this.speed.getY() + this.radius <= 0;
+    },
+
+    overBottom: function() {
+        return this.position.getY() + this.speed.getY() >= height + this.radius;
+    },
+
     reverse: function(axis) {
         switch (axis) {
             case "X":
                 this.direction.setX(-this.direction.getX());
-                this.velocity.setX(-this.velocity.getX());
+                this.speed.setX(-this.speed.getX());
                 break;
             case "Y":
                 this.direction.setY(-this.direction.getY());
-                this.velocity.setY(-this.velocity.getY());
+                this.speed.setY(-this.speed.getY());
                 break;
             default:
                 break;
