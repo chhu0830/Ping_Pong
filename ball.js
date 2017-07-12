@@ -25,7 +25,7 @@ var ball = {
 
     draw: function() {
         if (this.visible) {
-            context.fillStyle = ball_color;
+            context.fillStyle = this.color;
             context.beginPath();
             context.arc(this.position.getX(), this.position.getY(), this.radius, 0, Math.PI*2);
             context.fill();
@@ -44,11 +44,25 @@ var ball = {
     check: function() {
         if (this.position.getY() + this.velocity.getY() - this.radius <= 0) {
             this.position.setY(0 + this.velocity.getY() + this.radius);
-            this.reverse("Y");
+            if (ball_through) {
+                if (this.position.getY() + this.velocity.getY() + this.radius <= 0)
+                    this.position.setY(height + this.radius);
+            }
+            else {
+                this.position.setY(0 + this.velocity.getY() + this.radius);
+                this.reverse("Y");
+            }
         }
         else if (this.position.getY() + this.velocity.getY() + this.radius >= height) {
             this.position.setY(height + this.velocity.getY() - this.radius);
-            this.reverse("Y");
+            if (ball_through) {
+                if (this.position.getY() + this.velocity.getY() >= height + this.radius)
+                    this.position.setY(0 + this.radius);
+            }
+            else {
+                this.position.setY(height + this.velocity.getY() - this.radius);
+                this.reverse("Y");
+            }
         }
 
         if (this.position.getY() >= board1.min && this.position.getY() <= board1.max && this.position.getX() + this.velocity.getX() - board1.position.getX() < this.radius) {

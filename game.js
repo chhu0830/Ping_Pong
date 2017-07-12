@@ -109,15 +109,24 @@ function use_skill(player, skill) {
         skill_using[player][skill] = true;
         skill_interval[player][skill] = setInterval(function() {
             console.log(skill_time[player][skill]);
-            if (--skill_time[player][skill] == 0) {
-                skill_using[player][skill] = false;
-                document.getElementById("skill" + (player + 1) + skill).innerHTML = "X";
-                skills[skill].func();
-                clearInterval(skill_interval[player][skill]);
+            skill_time[player][skill] -= 1;
+            if (skill_time[player][skill] <= 0) {
+                stop_skill(player, skill);
             }
         }, 1000);
+        if (skill_time[player][skill] <= 0) {
+            stop_skill(player, skill);
+        }
     }
 };
+
+function stop_skill(player, skill) {
+    skills[skill].func(player);
+    skill_using[player][skill] = false;
+    document.getElementById("skill" + (player + 1) + skill).innerHTML = "X";
+    skills[skill].func();
+    clearInterval(skill_interval[player][skill]);
+}
 
 function setTimer(t) {
     var timer  = document.getElementById("timer");
@@ -163,7 +172,7 @@ function start() {
     var time = game_time;
     interval = setInterval(function() {
         setTimer(--time);
-        if (time == 0) {
+        if (time <= 0) {
             game_over = true;
             clearInterval(interval);
         }

@@ -131,10 +131,10 @@ var multiBall = {
             case 0:
             case 1:
                 if (this.balls.length == 0) {
-                    ball0.radius = ball_radius / 2;
+                    ball0.radius = ball_radius / 4;
                     ball0.velocity.setLength(ball_speed * 2);
                     for (var j = 0; j < 10; j++) {
-                        this.balls.push(ball.create(ball0.position.getX(), ball0.position.getY(), ball_radius / 2, ball_speed * 2, Math.random() * Math.PI * 2, ball_func));
+                        this.balls.push(ball.create(ball0.position.getX(), ball0.position.getY(), ball_radius / 4, ball_speed * 2, Math.random() * Math.PI * 2, ball_color, ball_func));
                     }
                 }
                 else {
@@ -149,6 +149,42 @@ var multiBall = {
                 ball0.radius = ball_radius;
                 ball0.velocity.setLength(ball_speed);
                 this.balls = [];
+                break;
+        }
+    }
+}
+
+var colorBall = {
+    icon: "./images/color.png",
+    time: 10,
+    r: 0,
+    g: 0,
+    b: 0,
+    func: function(player) {
+        switch (player) {
+            case 0:
+            case 1:
+                ball0.color = ["#FF0000", "#00FF00", "#0000FF"].sort(function() { return Math.random() < 0.5; })[0];
+                break;
+            default:
+                ball0.color = ball_color;
+                break;
+        }
+    }
+}
+
+var straightBall = {
+    icon: "./images/straightBall.png",
+    time: 0,
+    func: function(player) {
+        switch (player) {
+            case 0:
+                ball0.direction.setAngle(0);
+                break;
+            case 1:
+                ball0.direction.setAngle(Math.PI);
+                break;
+            default:
                 break;
         }
     }
