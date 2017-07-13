@@ -5,22 +5,22 @@ var speedUp = {
         switch (player) {
             case 0:
                 if (ball0.position.getX() > width / 2) {
-                    ball0.velocity.setLength(ball_speed * 4);
+                    ball0.speed.setLength(ball_speed * 4);
                 }
                 else {
-                    ball0.velocity.setLength(ball_speed / 2);
+                    ball0.speed.setLength(ball_speed / 2);
                 }
                 break;
             case 1:
                 if (ball0.position.getX() < width / 2) {
-                    ball0.velocity.setLength(ball_speed * 4);
+                    ball0.speed.setLength(ball_speed * 4);
                 }
                 else {
-                    ball0.velocity.setLength(ball_speed / 2);
+                    ball0.speed.setLength(ball_speed / 2);
                 }
                 break;
             default:
-                ball0.velocity.setLength(ball_speed);
+                ball0.speed.setLength(ball_speed);
                 break;
         }
     }
@@ -33,7 +33,7 @@ var disappear = {
         switch(player) {
             case 0:
                 if (ball0.position.getX() > width / 4 && ball0.position.getX() < width * 3 / 4) {
-                    if (ball0.velocity.getX() > 0)
+                    if (ball0.speed.getX() > 0)
                         ball0.visible = false;
                     else
                         ball0.visible = true;
@@ -44,7 +44,7 @@ var disappear = {
                 break;
             case 1:
                 if (ball0.position.getX() > width / 4 && ball0.position.getX() < width * 3 / 4) {
-                    if (ball0.velocity.getX() < 0)
+                    if (ball0.speed.getX() < 0)
                         ball0.visible = false;
                     else
                         ball0.visible = true;
@@ -70,6 +70,25 @@ var bigBoard = {
                 break;
             case 1:
                 board2.length = board_length * 2;
+                break;
+            default:
+                board1.length = board_length;
+                board2.length = board_length;
+                break;
+        }
+    }
+}
+
+var smallBoard = {
+    icon: "./images/smallBoard.png",
+    time: 5,
+    func: function(player) {
+        switch (player) {
+            case 0:
+                board2.length = board_length / 2;
+                break;
+            case 1:
+                board1.length = board_length / 2;
                 break;
             default:
                 board1.length = board_length;
@@ -117,38 +136,6 @@ var demo = {
             case 1:
                 break;
             default:
-                break;
-        }
-    }
-}
-
-var multiBall = {
-    balls: [],
-    icon: "./images/multiBall.png",
-    time: 5,
-    func: function(player) {
-        switch (player) {
-            case 0:
-            case 1:
-                if (this.balls.length == 0) {
-                    ball0.radius = ball_radius / 4;
-                    ball0.velocity.setLength(ball_speed * 2);
-                    for (var j = 0; j < 10; j++) {
-                        this.balls.push(ball.create(ball0.position.getX(), ball0.position.getY(), ball_radius / 4, ball_speed * 2, Math.random() * Math.PI * 2, ball_color, ball_func));
-                    }
-                }
-                else {
-                    for (var j = 0; j < this.balls.length; j++) {
-                        this.balls[j].draw();
-                        this.balls[j].check();
-                        this.balls[j].update();
-                    }
-                }
-                break;
-            default:
-                ball0.radius = ball_radius;
-                ball0.velocity.setLength(ball_speed);
-                this.balls = [];
                 break;
         }
     }

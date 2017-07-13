@@ -74,28 +74,28 @@ window.onload = function() {
                     start();
                 break;
             case 49:
-                use_skill(0, 0);
+                useSkill(0, 0);
                 break;
             case 50:
-                use_skill(0, 1);
+                useSkill(0, 1);
                 break;
             case 51:
-                use_skill(0, 2);
+                useSkill(0, 2);
                 break;
             case 52:
-                use_skill(0, 3);
+                useSkill(0, 3);
                 break;
             case 55:
-                use_skill(1, 0);
+                useSkill(1, 0);
                 break;
             case 56:
-                use_skill(1, 1);
+                useSkill(1, 1);
                 break;
             case 57:
-                use_skill(1, 2);
+                useSkill(1, 2);
                 break;
             case 48:
-                use_skill(1, 3);
+                useSkill(1, 3);
                 break;
             default:
                 break;
@@ -105,7 +105,7 @@ window.onload = function() {
     init();
 }
 
-function use_skill(player, skill) {
+function useSkill(player, skill) {
     if (skill_available[player][skill] && !skill_using[player^1][skill]) {
         skill_available[player][skill] = false;
         skill_using[player][skill] = true;
@@ -113,16 +113,16 @@ function use_skill(player, skill) {
             console.log(skill_time[player][skill]);
             skill_time[player][skill] -= 1;
             if (skill_time[player][skill] <= 0) {
-                stop_skill(player, skill);
+                stopSkill(player, skill);
             }
         }, 1000);
         if (skill_time[player][skill] <= 0) {
-            stop_skill(player, skill);
+            stopSkill(player, skill);
         }
     }
 };
 
-function stop_skill(player, skill) {
+function stopSkill(player, skill) {
     skills[skill].func(player);
     skill_using[player][skill] = false;
     document.getElementById("skill" + (player + 1) + skill).innerHTML = "X";
@@ -185,7 +185,6 @@ function start() {
 
 function game() {
     if (!game_over) {
-        draw();
         for (var i = 0; i < skills.length; i++) {
             if (skill_using[0][i]) {
                 skills[i].func(0);
@@ -195,6 +194,7 @@ function game() {
             }
         }
 
+        draw();
         requestAnimationFrame(game);
     }
 };
