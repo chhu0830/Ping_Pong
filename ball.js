@@ -54,24 +54,12 @@ var ball = {
     },
 
     check: function() {
-        if (this.touchTop()) {
-            this.position.setY(0 + this.speed.getY() + this.radius);
-            if (ball_through) {
-                if (this.overTop())
-                    this.position.setY(height + this.radius);
-            }
-            else {
+        if (ball_pass == false) {
+            if (this.touchTop()) {
                 this.position.setY(0 + this.speed.getY() + this.radius);
                 this.reverse("Y");
             }
-        }
-        else if (this.touchBottom()) {
-            this.position.setY(height + this.speed.getY() - this.radius);
-            if (ball_through) {
-                if (this.position.getY() + this.speed.getY() >= height + this.radius)
-                    this.position.setY(0 + this.radius);
-            }
-            else {
+            else if (this.touchBottom()) {
                 this.position.setY(height + this.speed.getY() - this.radius);
                 this.reverse("Y");
             }

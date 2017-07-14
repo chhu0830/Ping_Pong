@@ -16,6 +16,7 @@ var skill_interval = null;
 var score1 = null;
 var score2 = null;
 
+var round = 0;
 var game_over = null;
 var interval = null;
 var img = null;
@@ -147,6 +148,8 @@ function setIcon() {
 }
 
 function init() {
+    if (round == 5)
+        location.reload();
     ball0  = ball.create(width / 2, height / 2, ball_radius, ball_speed, Math.random() * Math.PI * 2, ball_color, ball_func);
     board1 = board.create(board_margin, height / 2, board_length, board_speed, board1_color);
     board2 = board.create(width - board_margin, height / 2, board_length, board_speed, board2_color);
@@ -164,6 +167,8 @@ function init() {
     skill_using = [Array(skills.length).fill(false), Array(skills.length).fill(false)];
     skill_available = [Array(skills.length).fill(true), Array(skills.length).fill(true)];
     skill_interval = [Array(skills.length).fill(null), Array(skills.length).fill(null)];
+    playground_effect = playground_effects[round];
+    playground_effect.init();
     game_over = true;
     setTimer(game_time);
     draw();
@@ -176,6 +181,8 @@ function start() {
         setTimer(--time);
         if (time <= 0) {
             game_over = true;
+            round++;
+            playground_effect.over();
             clearInterval(interval);
         }
     }, 1000);
@@ -185,6 +192,8 @@ function start() {
 
 function game() {
     if (!game_over) {
+        context.clearRect(0, 0, width, height);
+        playground_effect.func();
         for (var i = 0; i < skills.length; i++) {
             if (skill_using[0][i]) {
                 skills[i].func(0);
@@ -200,12 +209,11 @@ function game() {
 };
 
 function draw() {
-    context.clearRect(0, 0, width, height);
-
     ball0.check();
     ball0.update();
     board1.update();
     board2.update();
+
 
     ball0.draw();
     board1.draw();
