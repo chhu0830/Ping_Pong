@@ -95,7 +95,7 @@ var ghost = {
                 document.getElementById('playground').style.backgroundImage = "url('./images/ghost.gif')";
                 break;
             default:
-                document.getElementById('playground').style.backgroundImage = "#FFFFFF";
+                document.getElementById('playground').style.backgroundImage = "";
                 break;
         }
     }

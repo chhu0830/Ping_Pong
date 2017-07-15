@@ -38,7 +38,7 @@ body {
     height: 80vh;
     margin-left: 5vw;
     margin-top: 5vh;
-    background-size: auto ;
+    background-size: cover;
 }
 
 .board {

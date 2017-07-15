@@ -20,9 +20,11 @@ var round = 0;
 var game_over = null;
 var interval = null;
 var img = null;
+var img2 = null;
 
 window.onload = function() {
     img = document.createElement("img");
+    img2 = document.createElement("img2");
     canvas = document.getElementById("playground");
     width  = canvas.width = canvas.clientWidth;
     height = canvas.height = canvas.clientHeight;
@@ -32,7 +34,6 @@ window.onload = function() {
 
     board_length = height * (2 / 10);
 
-    setIcon();
 
 
     document.body.addEventListener("keydown", function(event) {
@@ -148,9 +149,19 @@ function setIcon() {
 }
 
 function init() {
+    document.getElementById("playground").style.backgroundImage = background_image;
     if (round == 5)
         location.reload();
+    skills = [];
+    default_skills = default_skills.sort(function() { return Math.random() < 0.8; });
+    for (var i = 0; i < team.length; i++)
+        skills.push(team_skills[team[i]]);
+    number = 4 - skills.length;
+    for (var i = 0; i < number; i++)
+        skills.push(default_skills[i]);
+    setIcon();
     ball0  = ball.create(width / 2, height / 2, ball_radius, ball_speed, Math.random() * Math.PI * 2, ball_color, ball_func);
+    ball0.img = ball_img;
     board1 = board.create(board_margin, height / 2, board_length, board_speed, board1_color);
     board2 = board.create(width - board_margin, height / 2, board_length, board_speed, board2_color);
     score1 = 0;
