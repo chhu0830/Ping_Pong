@@ -15,6 +15,7 @@ var background_image = "url('./images/sky.jpg')"
 var ball_img = "./images/meteorite.png"
 
 var default_skills = [gorilla, straightBall, colorBall, variantBall, smallBoard, bigBoard, disappear, speedUp];
-var team = [2, 3];
+var team_skills = [];
+var team = [];
 var skills = [];
 var playground_effects = [nothing, transport, ballPass, multiBall, random];
