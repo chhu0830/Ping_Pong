@@ -181,7 +181,7 @@ function init() {
     skill_available = [Array(skills.length).fill(true), Array(skills.length).fill(true)];
     skill_interval = [Array(skills.length).fill(null), Array(skills.length).fill(null)];
     skill_balls = [];
-    for (var i = 0; i < 5; i++)
+    for (var i = 0; i < 2; i++)
         skill_balls.push(skill_ball.create(getRandomSkill()));
     playground_effect = playground_effects[round];
     playground_effect.init();
