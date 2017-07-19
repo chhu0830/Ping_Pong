@@ -12,6 +12,7 @@ var skill_time = null;
 var skill_using = null;
 var skill_available = null;
 var skill_interval = null;
+var skill_balls = null;
 
 var score1 = null;
 var score2 = null;
@@ -20,11 +21,10 @@ var round = 0;
 var game_over = null;
 var interval = null;
 var img = null;
-var img2 = null;
+
 
 window.onload = function() {
-    img = document.createElement("img");
-    img2 = document.createElement("img2");
+    // img = document.createElement("img");
     canvas = document.getElementById("playground");
     width  = canvas.width = canvas.clientWidth;
     height = canvas.height = canvas.clientHeight;
@@ -37,7 +37,7 @@ window.onload = function() {
 
 
     document.body.addEventListener("keydown", function(event) {
-        console.log(event.keyCode);
+        // console.log(event.keyCode);
         switch (event.keyCode) {
             case 87:
                 board1.setUp(true);
@@ -112,7 +112,7 @@ function useSkill(player, skill) {
         skill_available[player][skill] = false;
         skill_using[player][skill] = true;
         skill_interval[player][skill] = setInterval(function() {
-            console.log(skill_time[player][skill]);
+            // console.log(skill_time[player][skill]);
             skill_time[player][skill] -= 1;
             if (skill_time[player][skill] <= 0) {
                 stopSkill(player, skill);
@@ -148,20 +148,22 @@ function setIcon() {
     }
 }
 
+function getRandomSkill() {
+    return default_skills.sort(function() { return Math.random() < 0.8; })[0];
+}
+
 function init() {
     document.getElementById("playground").style.backgroundImage = background_image;
     if (round == 5)
         location.reload();
     skills = [];
-    default_skills = default_skills.sort(function() { return Math.random() < 0.8; });
     for (var i = 0; i < team.length; i++)
         skills.push(team_skills[team[i]]);
     number = 4 - skills.length;
     for (var i = 0; i < number; i++)
-        skills.push(default_skills[i]);
+        skills.push(getRandomSkill());
     setIcon();
     ball0  = ball.create(width / 2, height / 2, ball_radius, ball_speed, Math.random() * Math.PI * 2, ball_color, ball_func);
-    ball0.img = ball_img;
     board1 = board.create(board_margin, height / 2, board_length, board_speed, board1_color);
     board2 = board.create(width - board_margin, height / 2, board_length, board_speed, board2_color);
     score1 = 0;
@@ -178,6 +180,9 @@ function init() {
     skill_using = [Array(skills.length).fill(false), Array(skills.length).fill(false)];
     skill_available = [Array(skills.length).fill(true), Array(skills.length).fill(true)];
     skill_interval = [Array(skills.length).fill(null), Array(skills.length).fill(null)];
+    skill_balls = [];
+    for (var i = 0; i < 5; i++)
+        skill_balls.push(skill_ball.create(getRandomSkill()));
     playground_effect = playground_effects[round];
     playground_effect.init();
     game_over = true;
@@ -213,6 +218,9 @@ function game() {
                 skills[i].func(1);
             }
         }
+        for (var i = 0; i < skill_balls.length; i++) {
+            skill_balls[i].update();
+        }
 
         draw();
         requestAnimationFrame(game);
@@ -231,3 +239,68 @@ function draw() {
     board2.draw();
 };
 
+var skill_ball = {
+    skill: null,
+    ball: null,
+    time: null,
+    interval: null,
+    using: null,
+    available: true,
+    create: function(skill) {
+        obj = Object.create(this);
+        obj.skill = skill;
+        var x = Math.floor(Math.random() * width * 0.6 + width * 0.2);
+        var y = Math.floor(Math.random() * height * 0.6 + height * 0.2);
+        obj.ball = ball.create(width / 2, height / 2, ball_radius, ball_speed / 5, Math.random() * 2 * Math.PI, ball_color, ball_func);
+        obj.ball.img = obj.skill.icon;
+        obj.time = obj.skill.time;
+        obj.using = [false, false];
+        return obj;
+    },
+
+    update: function() {
+        if (this.available && this.ball.touchBoard1()) {
+            this.available = false;
+            this.using[0] = true;
+            this.interval = setInterval(function(tmp) {
+                if (--tmp.time <= 0) {
+                    tmp.using[0] = false;
+                    tmp.skill.func();
+                    clearInterval(tmp.interval);
+                }
+            }, 1000, this);
+            if (this.time <= 0) {
+                this.using[0] = false;
+                this.skill.func();
+                clearInterval(this.interval);
+            }
+        }
+        if (this.available && this.ball.touchBoard2()) {
+            this.available = false;
+            this.using[1] = true;
+            this.interval = setInterval(function(tmp) {
+                if (--tmp.time <= 0) {
+                    tmp.using[1] = false;
+                    tmp.skill.func();
+                    clearInterval(tmp.interval);
+                }
+            }, 1000, this);
+            if (this.time <= 0) {
+                this.using[1] = false;
+                this.skill.func();
+                clearInterval(this.interval);
+            }
+        }
+        if (this.using[0]) {
+            this.skill.func(0);
+        }
+        else if (this.using[1]) {
+            this.skill.func(1);
+        }
+        else if (this.available){
+            this.ball.check(false);
+            this.ball.update();
+            this.ball.draw();
+        }
+    }
+}
