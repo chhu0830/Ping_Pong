@@ -151,9 +151,11 @@ var colorBall = {
         switch (player) {
             case 0:
             case 1:
+                ball0.img = null;
                 ball0.color = ["#FF0000", "#00FF00", "#0000FF"].sort(function() { return Math.random() < 0.5; })[0];
                 break;
             default:
+                ball0.img = ball_img;
                 ball0.color = ball_color;
                 break;
         }

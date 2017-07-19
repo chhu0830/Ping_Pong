@@ -6,7 +6,8 @@ var ball = {
     color: "#000000",
     func: null,
     visible: true,
-    img: null,
+    img: ball_img,
+    img_element: null,
     t: 0,
     dx: 0.001,
 
@@ -21,6 +22,7 @@ var ball = {
         obj.direction.setAngle(direction);
         obj.color = color;
         obj.func = func;
+        obj.img_element = document.createElement("img");
         return obj
     },
 
@@ -33,12 +35,12 @@ var ball = {
                 context.fill();
             }
             else {
-                img.src = this.img;
+                this.img_element.src = this.img;
                 context.save();
                 context.beginPath();
                 context.arc(this.position.getX(), this.position.getY(), this.radius, 0, Math.PI*2);
                 context.clip();
-                context.drawImage(img, 0, 0, img.width, img.height, this.position.getX() - this.radius, this.position.getY() - this.radius, this.radius * 2, this.radius * 2);
+                context.drawImage(this.img_element, 0, 0, this.img_element.width, this.img_element.height, this.position.getX() - this.radius, this.position.getY() - this.radius, this.radius * 2, this.radius * 2);
                 context.restore();
             }
         }
@@ -53,7 +55,7 @@ var ball = {
         this.position.setY(this.position.getY() + this.speed.getY());
     },
 
-    check: function() {
+    check: function(count) {
         if (ball_pass == false) {
             if (this.touchTop()) {
                 this.position.setY(0 + this.speed.getY() + this.radius);
@@ -62,6 +64,14 @@ var ball = {
             else if (this.touchBottom()) {
                 this.position.setY(height + this.speed.getY() - this.radius);
                 this.reverse("Y");
+            }
+        }
+        else {
+            if (this.overTop()) {
+                this.position.setY(height + this.radius);
+            }
+            else if (this.overBottom()) {
+                this.position.setY(0 - this.radius);
             }
         }
 
@@ -76,13 +86,15 @@ var ball = {
         else {
             if (this.touchLeft()) {
                 this.position.setX(0 + this.speed.getX() + this.radius);
-                this.reverse("X")
-                document.getElementById("score2").innerHTML = ++score2;
+                this.reverse("X");
+                if (count != false)
+                    document.getElementById("score2").innerHTML = ++score2;
             }
             else if (this.touchRight()) {
                 this.position.setX(width + this.speed.getX() - this.radius);
-                this.reverse("X")
-                document.getElementById("score1").innerHTML = ++score1;
+                this.reverse("X");
+                if (count != false)
+                    document.getElementById("score1").innerHTML = ++score1;
             }
         }
         return 0;

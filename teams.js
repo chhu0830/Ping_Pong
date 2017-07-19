@@ -78,7 +78,6 @@ var mySkill = {
             default:
                 ball0.radius = ball_radius;
                 ball0.speed.setLength(ball_speed);
-                ball0.img = null;
                 break;
         }
     }
