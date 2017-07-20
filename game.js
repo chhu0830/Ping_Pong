@@ -183,7 +183,7 @@ function init() {
     skill_balls = [];
     for (var i = 0; i < 2; i++)
         skill_balls.push(skill_ball.create(getRandomSkill()));
-    playground_effect = playground_effects[round];
+    playground_effect = playground_effects.sort(function() { return Math.random() < 0.8; })[0];
     playground_effect.init();
     game_over = true;
     setTimer(game_time);
