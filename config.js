@@ -1,4 +1,4 @@
-var ball_speed = 20;
+var ball_speed = 15;
 var ball_radius = 20;
 var ball_color = "#FFFFFF";
 var ball_func = line;
